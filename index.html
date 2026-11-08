@@ -22,7 +22,7 @@ body.focusMode{position:fixed;inset:0;z-index:1000;height:100dvh}body.focusMode 
 </style><header><h1>図面寸法測定 <span style="font-size:14px;font-weight:400">基本単位：㎜</span></h1></header>
 <div class="panel filePanel"><div class="row"><label class="file">PDFを開く<input id="file" type="file" accept="application/pdf,.pdf"></label><span id="name"></span><label>ページ <select id="page"></select></label><button id="saveProject">保存</button><label class="file">再読込<input id="projectFile" type="file" accept=".json,application/json" style="display:none"></label></div><div class="row" id="projectFields"><label>案件名 <input id="jobName" type="text" maxlength="120" placeholder="任意"></label><label>図面名 <input id="drawingName" type="text" maxlength="200"></label><button id="materialLinkOpen" class="primary">材料計算への連携</button></div></div>
 <div class="panel settingsPanel"><div class="row"><label>縮尺 1 / <input id="scale" type="number" min="1" max="100000" value="200" inputmode="decimal"></label><button id="apply">縮尺を適用</button><button id="calibrate">基準寸法で補正</button><button id="autoCalibrate">自動補正候補</button><label>実寸 <input id="known" type="number" min="0.01" value="54000" inputmode="decimal"> mm</label></div><div class="row"><div id="basis"></div><span id="calibrationBadge">未補正</span><button id="checkScaleOpen">別寸法で照合</button></div><div class="row" id="dimensionTools" hidden><label>記入寸法 <input id="dimensionValue" type="number" min="0" step="any" inputmode="decimal"> mm</label><button id="dimensionUpdate">選択寸法を更新</button><span>2点で配置・線をドラッグして表示位置を移動・数値をクリック／タップして編集</span></div><div class="row" id="areaTools" hidden><button id="closePolygon">範囲を閉じる</button><label id="parentLabel" hidden>差引対象 <select id="parentArea"></select></label><span>頂点を順に押して囲みます</span></div><div id="totals" class="areaTotals" hidden></div><div class="row" id="textTools" hidden><div class="row" id="textEntryTools"><input id="annotation" type="text" placeholder="記入する文字" maxlength="200" style="width:220px"><label>文字サイズ <input id="textSize" type="number" value="15" min="15" max="48" style="width:64px"></label><button id="updateText">選択文字を更新</button></div><div class="row" id="copyTools" hidden><textarea id="copyText" rows="1" aria-label="コピーする図面の文字" placeholder="図面の文字を押して選択"></textarea><button id="copyTextButton">文字をコピー</button></div></div><div id="autoPanel" class="row" hidden style="margin-top:8px"><label>候補 <select id="autoChoice" aria-label="自動補正の候補"></select></label><button id="autoApply" class="primary">この両端で補正を適用</button><button id="autoCancel">閉じる</button><span id="autoInfo"></span></div></div>
-<div class="panel measurementPanel"><div class="toolGroups"><fieldset class="toolGroup"><legend>表示</legend><div class="groupButtons"><button id="fullscreenToggle" aria-pressed="false">全画面</button><button id="move">移動</button><button id="minus" aria-label="縮小">−</button><button id="plus" aria-label="拡大">＋</button><button id="fit">全体表示</button></div></fieldset><fieldset class="toolGroup"><legend>計測</legend><div class="groupButtons"><button id="measure" class="active">測定</button><select id="direction" aria-label="測定方向"><option value="free">2点間</option><option value="h">水平寸法</option><option value="v">垂直寸法</option></select><button id="dimension">寸法線</button><button id="angle">角度</button><button id="area">面積</button><button id="hole">開口差引</button></div></fieldset><fieldset class="toolGroup"><legend>測定補助</legend><div class="groupButtons"><button id="snap" aria-pressed="true" class="active">線にスナップ：ON</button><button id="magnifierToggle" class="active">拡大窓：ON</button><button id="verifyCalibration">補正照合</button><button id="detectImageLines" aria-pressed="false">画像の線を検出</button></div></fieldset><fieldset class="toolGroup"><legend>文字</legend><div class="groupButtons"><button id="textMode">文字入力</button><button id="copyMode">文字コピー</button></div></fieldset><fieldset class="toolGroup"><legend>編集・出力</legend><div class="groupButtons"><button id="undo">1つ戻す</button><button id="cancel">点を取消</button><button id="clear">測定を全消去</button><button id="pdfExport">PDF出力</button></div></fieldset></div><div class="feedback"><div id="status" role="status" aria-live="polite">図面を準備しています…</div><span id="snapInfo"></span><div id="result">—</div></div></div>
+<div class="panel measurementPanel"><div class="toolGroups"><fieldset class="toolGroup"><legend>表示</legend><div class="groupButtons"><button id="fullscreenToggle" aria-pressed="false">全画面</button><button id="move">移動</button><button id="minus" aria-label="縮小">−</button><button id="plus" aria-label="拡大">＋</button><button id="fit">全体表示</button></div></fieldset><fieldset class="toolGroup"><legend>計測</legend><div class="groupButtons"><button id="measure" class="active">測定</button><select id="direction" aria-label="測定方向"><option value="free">2点間</option><option value="h">水平寸法</option><option value="v">垂直寸法</option></select><button id="dimension">寸法線</button><button id="angle">角度</button><button id="area">面積</button><button id="hole">開口差引</button></div></fieldset><fieldset class="toolGroup"><legend>測定補助</legend><div class="groupButtons"><button id="snap" aria-pressed="true" class="active">線にスナップ：ON</button><button id="magnifierToggle" class="active">拡大窓：ON</button><button id="verifyCalibration">補正照合</button><button id="detectImageLines" aria-pressed="false">画像の線を検出</button><button id="dimensionSelectMode" aria-pressed="false">測定線・寸法線選択</button><button id="deleteSelectedDimension" disabled>選択線を削除</button><button id="gridToggle" aria-pressed="false">グリッド：OFF</button></div></fieldset><fieldset class="toolGroup"><legend>文字</legend><div class="groupButtons"><button id="textMode">文字入力</button><button id="copyMode">文字コピー</button></div></fieldset><fieldset class="toolGroup"><legend>編集・出力</legend><div class="groupButtons"><button id="undo">1つ戻す</button><button id="cancel">点を取消</button><button id="clear">測定を全消去</button><button id="pdfExport">PDF出力</button></div></fieldset></div><div class="feedback"><div id="status" role="status" aria-live="polite">図面を準備しています…</div><span id="snapInfo"></span><div id="result">—</div></div></div>
 
 <div id="viewer"><div id="loupe" hidden><div id="loupeLabel"></div><div id="loupeView"><img id="loupeImage" draggable="false" alt="測定位置の拡大"><canvas id="loupeCanvas" hidden></canvas><div id="loupeCross"></div></div></div><div id="sheet"><canvas id="canvas"></canvas><img id="originalVector" alt="元の図面・記載寸法" draggable="false" style="display:none"><svg id="overlay" xmlns="http://www.w3.org/2000/svg"></svg></div></div>
 <div class="footer"><details id="historyDetails"><summary>測定履歴（このページ）</summary><div id="history"></div></details></div>
@@ -200,7 +200,7 @@ $('detectImageLines').onclick=async()=>{if(!doc||!base||busy||pinchActive)return
 let snapKind='',magnifierOn=true,loupeReady=false,loupeRequest=0;
 function segmentCrossPoint(a,b,c,d){const ux=b.x-a.x,uy=b.y-a.y,vx=d.x-c.x,vy=d.y-c.y,den=ux*vy-uy*vx;if(Math.abs(den)<1e-9)return null;const dx=c.x-a.x,dy=c.y-a.y,t=(dx*vy-dy*vx)/den,u=(dx*uy-dy*ux)/den;if(t<-.000001||t>1.000001||u<-.000001||u>1.000001)return null;return{x:a.x+t*ux,y:a.y+t*uy}}
 function nearestOnSegment(p,l){const dx=l.b.x-l.a.x,dy=l.b.y-l.a.y,den=dx*dx+dy*dy,t=den?Math.max(0,Math.min(1,((p.x-l.a.x)*dx+(p.y-l.a.y)*dy)/den)):0;const q={x:l.a.x+t*dx,y:l.a.y+t*dy};return{p:q,d:Math.hypot(q.x-p.x,q.y-p.y)}}
-function snapPoint(p){snapKind='';if(!snapOn||['move','text','copy'].includes(mode)){$('snapInfo').textContent='';return p}const limit=12/zoom,lines=rasterLineCache[num]?.active?rasterLineCache[num].combined:(snapCache[num]||[]),near=[];let nearest=null,feature=null,featureDistance=10/zoom;for(const l of lines){if(p.x<Math.min(l.a.x,l.b.x)-limit||p.x>Math.max(l.a.x,l.b.x)+limit||p.y<Math.min(l.a.y,l.b.y)-limit||p.y>Math.max(l.a.y,l.b.y)+limit)continue;const q=nearestOnSegment(p,l);if(q.d<limit){near.push({l,d:q.d});if(!nearest||q.d<nearest.d)nearest=q;for(const v of [l.a,l.b]){const d=Math.hypot(v.x-p.x,v.y-p.y);if(d<featureDistance){featureDistance=d;feature={p:v,kind:'端点'}}}}}near.sort((a,b)=>a.d-b.d);const local=near.slice(0,96);for(let i=0;i<local.length;i++)for(let j=i+1;j<local.length;j++){const q=segmentCrossPoint(local[i].l.a,local[i].l.b,local[j].l.a,local[j].l.b);if(!q)continue;const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<=featureDistance+1e-7){featureDistance=d;feature={p:q,kind:'交点'}}}const selected=feature||nearest&&{p:nearest.p,kind:'直線'};if(selected){snapKind=selected.kind;$('snapInfo').textContent='吸着：'+snapKind;return{...selected.p}}$('snapInfo').textContent='';return p}
+function snapPoint(p){snapKind='';if(!snapOn||['move','text','copy'].includes(mode)){$('snapInfo').textContent='';return p}const limit=6/zoom,lines=rasterLineCache[num]?.active?rasterLineCache[num].combined:(snapCache[num]||[]),near=[];let nearest=null,feature=null,featureDistance=6/zoom;for(const l of lines){if(p.x<Math.min(l.a.x,l.b.x)-limit||p.x>Math.max(l.a.x,l.b.x)+limit||p.y<Math.min(l.a.y,l.b.y)-limit||p.y>Math.max(l.a.y,l.b.y)+limit)continue;const q=nearestOnSegment(p,l);if(q.d<limit){near.push({l,d:q.d});if(!nearest||q.d<nearest.d)nearest=q;for(const v of [l.a,l.b]){const d=Math.hypot(v.x-p.x,v.y-p.y);if(d<featureDistance){featureDistance=d;feature={p:v,kind:'端点'}}}}}near.sort((a,b)=>a.d-b.d);const local=near.slice(0,96);for(let i=0;i<local.length;i++)for(let j=i+1;j<local.length;j++){const q=segmentCrossPoint(local[i].l.a,local[i].l.b,local[j].l.a,local[j].l.b);if(!q)continue;const d=Math.hypot(q.x-p.x,q.y-p.y);if(d<=featureDistance+1e-7){featureDistance=d;feature={p:q,kind:'交点'}}}const selected=feature||nearest&&{p:nearest.p,kind:'直線'};if(selected){snapKind=selected.kind;$('snapInfo').textContent='吸着：'+snapKind;return{...selected.p}}$('snapInfo').textContent='';return p}
 $('magnifierToggle').onclick=()=>{magnifierOn=!magnifierOn;$('magnifierToggle').classList.toggle('active',magnifierOn);$('magnifierToggle').textContent='拡大窓：'+(magnifierOn?'ON':'OFF');if(!magnifierOn)hideLoupe()};
 function hideLoupe(){$('loupe').hidden=true;loupeRequest++}
 function rawPoint(e){const box=svg.getBoundingClientRect();return{x:(e.clientX-box.left)*base.width/box.width,y:(e.clientY-box.top)*base.height/box.height}}
@@ -271,6 +271,112 @@ $('saveMaterialLink').onclick=makeMaterialLinkFile;
 for(const id of ['jobName','drawingName'])$(id).addEventListener('change',captureProjectFields);
 document.querySelectorAll('[data-link-close]').forEach(button=>button.onclick=()=>$(button.dataset.linkClose).close());
 applyProjectFields();refreshCalibrationBadge();
+
+// 寸法線の選択・移動・削除／表示グリッド（測定計算には関与しない）
+let dimensionSelectModeOn=false;
+let selectedDimensionForMove=null;
+let dimensionMovePointer=null;
+let gridVisible=false;
+const dimensionSelectButton=$('dimensionSelectMode');
+const deleteDimensionButton=$('deleteSelectedDimension');
+const gridButton=$('gridToggle');
+const originalModeSetForDimensionSelection=modeSet;
+modeSet=function(m){if(m!=='dimension'){dimensionSelectModeOn=false;selectedDimensionForMove=null;}return originalModeSetForDimensionSelection(m)};
+function updateDimensionSelectionUI(){
+  deleteDimensionButton.disabled=!selectedDimensionForMove;
+  deleteDimensionButton.textContent='選択線を削除';
+  dimensionSelectButton.textContent='測定線・寸法線選択';
+  dimensionSelectButton.classList.toggle('active',dimensionSelectModeOn);
+  dimensionSelectButton.setAttribute('aria-pressed',String(dimensionSelectModeOn));
+  gridButton.classList.toggle('active',gridVisible);
+  gridButton.setAttribute('aria-pressed',String(gridVisible));
+  gridButton.textContent='グリッド：'+(gridVisible?'ON':'OFF');
+}
+function clearDimensionSelection(){selectedDimensionForMove=null;updateDimensionSelectionUI();draw()}
+dimensionSelectButton.addEventListener('click',()=>{
+  if(busy)return;
+  dimensionSelectModeOn=!dimensionSelectModeOn;
+  if(dimensionSelectModeOn){modeSet('dimension');status('測定線・寸法線選択：線をタップして選択できます。寸法線はドラッグで表示位置を移動できます');}
+  else {selectedDimensionForMove=null;status('寸法選択・移動を終了しました');}
+  updateDimensionSelectionUI();draw();
+});
+gridButton.addEventListener('click',()=>{
+  gridVisible=!gridVisible;
+  if(gridVisible){
+    svg.style.backgroundImage='linear-gradient(to right, rgba(70,110,150,.22) 1px, transparent 1px),linear-gradient(to bottom, rgba(70,110,150,.22) 1px, transparent 1px)';
+    svg.style.backgroundSize='24px 24px';
+    svg.style.backgroundPosition='0 0';
+  }else{svg.style.backgroundImage='none';}
+  updateDimensionSelectionUI();
+  status(gridVisible?'表示グリッドをONにしました（測定値・スナップには影響しません）':'表示グリッドをOFFにしました');
+});
+deleteDimensionButton.addEventListener('click',()=>{
+  if(busy||!selectedDimensionForMove)return;
+  const records=state().records,index=records.findIndex(r=>r.id===selectedDimensionForMove&&(r.type==='dimension'||r.type==='line'||!r.type));
+  if(index<0){clearDimensionSelection();return;}
+  checkpoint();records.splice(index,1);selectedDimensionForMove=null;updateDimensionSelectionUI();draw();
+  status('選択した測定線／寸法線を削除しました（「1つ戻す」で復元できます）');
+});
+const originalDimensionDraw=draw;
+draw=function(updatePanels=true){
+  originalDimensionDraw(updatePanels);
+  if(!base||!selectedDimensionForMove)return;
+  const r=state().records.find(x=>x.id===selectedDimensionForMove&&(x.type==='dimension'||x.type==='line'||!x.type));
+  if(!r)return;
+  if(r.type==='dimension'){
+    const g=dimensionGeometry(r,1/zoom);
+    el('line',{x1:g.a.x,y1:g.a.y,x2:g.b.x,y2:g.b.y,stroke:'#e59a00','stroke-width':5/zoom,'stroke-dasharray':(5/zoom)+' '+(3/zoom),'pointer-events':'none'});
+  }else{
+    el('line',{x1:r.a.x,y1:r.a.y,x2:r.b.x,y2:r.b.y,stroke:'#e59a00','stroke-width':6/zoom,'stroke-dasharray':(5/zoom)+' '+(3/zoom),'pointer-events':'none'});
+  }
+};
+function dimensionHit(p){
+  let best=null,distance=16/zoom;
+  for(let i=state().records.length-1;i>=0;i--){
+    const r=state().records[i];if(r.type!=='dimension'&&r.type!=='line'&&r.type!==undefined)continue;
+    const g=r.type==='dimension'?dimensionGeometry(r,1/zoom):{a:r.a,b:r.b};
+    const hit=nearestOnSegment(p,{a:g.a,b:g.b});
+    if(hit.d<distance){distance=hit.d;best={record:r,index:i,geometry:g};}
+  }
+  return best;
+}
+svg.addEventListener('pointerdown',e=>{
+  if(!dimensionSelectModeOn||mode!=='dimension'||busy||!base||!acceptsDrawingPointer(e)||e.pointerType==='touch'&&touchPoints.size>1)return;
+  const p=rawPoint(e),hit=dimensionHit(p);
+  e.preventDefault();e.stopImmediatePropagation();
+  if(!hit){selectedDimensionForMove=null;dimensionMovePointer=null;updateDimensionSelectionUI();draw();status('寸法線の選択を解除しました');return;}
+  selectedDimensionForMove=hit.record.id;
+  if(hit.record.type==='dimension'){
+    dimensionMovePointer={id:e.pointerId,start:p,last:p,offset:hit.record.offset||0,nx:hit.geometry.nx,ny:hit.geometry.ny,index:hit.index,moved:false};
+    svg.setPointerCapture(e.pointerId);
+  }else{
+    dimensionMovePointer=null;
+    svg.setPointerCapture(e.pointerId);
+  }
+  updateDimensionSelectionUI();draw();
+  status(hit.record.type==='dimension'?'寸法線を選択しました。ドラッグで表示位置を移動、削除ボタンで削除できます':'測定線を選択しました。削除ボタンで個別に削除できます');
+},{capture:true});
+svg.addEventListener('pointermove',e=>{
+  const d=dimensionMovePointer;if(!dimensionSelectModeOn||mode!=='dimension'||!d||d.id!==e.pointerId||busy)return;
+  const p=rawPoint(e);d.last=p;
+  if(Math.hypot(p.x-d.start.x,p.y-d.start.y)>2/zoom){
+    if(!d.moved){checkpoint();d.moved=true;}
+    const r=state().records[d.index];if(!r||r.id!==selectedDimensionForMove){dimensionMovePointer=null;return;}
+    r.offset=d.offset+(p.x-d.start.x)*d.nx+(p.y-d.start.y)*d.ny;
+    draw(false);
+  }
+  e.preventDefault();e.stopImmediatePropagation();
+},{capture:true});
+function finishDimensionMove(e){
+  const d=dimensionMovePointer;if(!d||d.id!==e.pointerId)return;
+  dimensionMovePointer=null;
+  if(d.moved){draw();status('寸法線の表示位置を移動しました（寸法値は固定）');}
+  else status('寸法線を選択しました。削除ボタンで削除できます');
+  e.preventDefault();e.stopImmediatePropagation();
+}
+svg.addEventListener('pointerup',finishDimensionMove,{capture:true});
+svg.addEventListener('pointercancel',finishDimensionMove,{capture:true});
+updateDimensionSelectionUI();
 
 </script><script>
 if ('serviceWorker' in navigator && ['https:', 'http:'].includes(location.protocol)) {

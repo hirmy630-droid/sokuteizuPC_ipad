@@ -1,5 +1,5 @@
 'use strict';
-const VERSION = '20261012-measure-edit-2207';
+const VERSION = '20261108-measure-line-select-delete-01';
 const BASE = new URL('./', self.registration.scope);
 const PREFIX = 'measurement-drawing-' + encodeURIComponent(BASE.href) + '-';
 const CACHE = PREFIX + VERSION;
